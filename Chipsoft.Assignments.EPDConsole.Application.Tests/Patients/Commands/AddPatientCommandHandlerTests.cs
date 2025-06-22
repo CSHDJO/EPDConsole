@@ -33,14 +33,28 @@ namespace Chipsoft.Assignments.EPDConsole.Application.Tests.Patients.Commands
                 FirstName = "John",
                 LastName = "Doe",
                 BSN = "123456789",
-                Email = "john.doe@test.com"
+                Address = "123 Main St",
+                PhoneNumber = "555-1234",
+                Email = "john.doe@test.com",
+                DateOfBirth = new System.DateTime(1990, 1, 1)
             };
 
             // Act
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            _contextMock.Verify(x => x.Patients.Add(It.Is<Patient>(p => p.FirstName == "John")), Times.Once);
+            _contextMock.Verify(
+                x => x.Patients.Add(It.Is<Patient>(p =>
+                    p.FirstName == command.FirstName &&
+                    p.LastName == command.LastName &&
+                    p.BSN == command.BSN &&
+                    p.Address == command.Address &&
+                    p.PhoneNumber == command.PhoneNumber &&
+                    p.Email == command.Email &&
+                    p.DateOfBirth == command.DateOfBirth
+                )), 
+                Times.Once);
+
             _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
     }

@@ -118,7 +118,7 @@ public class Program
         while (true)
         {
             Console.Write("Geboortedatum (dd-mm-jjjj): ");
-            if (DateTime.TryParse(Console.ReadLine(), out DateTime dob))
+            if (DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime dob))
             {
                 command.DateOfBirth = dob;
                 break;

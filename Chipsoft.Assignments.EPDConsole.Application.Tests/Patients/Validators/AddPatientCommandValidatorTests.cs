@@ -48,6 +48,38 @@ namespace Chipsoft.Assignments.EPDConsole.Application.Tests.Patients.Validators
         }
 
         [Fact]
+        public async Task Should_Have_Error_When_Email_Is_Invalid()
+        {
+            var command = new AddPatientCommand { Email = "invalid-email" };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.Email);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_PhoneNumber_Is_Too_Short()
+        {
+            var command = new AddPatientCommand { PhoneNumber = "123" };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.PhoneNumber);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_DateOfBirth_Is_In_Future()
+        {
+            var command = new AddPatientCommand { DateOfBirth = DateTime.Now.AddDays(1) };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.DateOfBirth);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_Address_Is_Empty()
+        {
+            var command = new AddPatientCommand { Address = string.Empty };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.Address);
+        }
+
+        [Fact]
         public async Task Should_Not_Have_Error_When_Command_Is_Valid()
         {
             var command = new AddPatientCommand
@@ -55,6 +87,7 @@ namespace Chipsoft.Assignments.EPDConsole.Application.Tests.Patients.Validators
                 FirstName = "John",
                 LastName = "Doe",
                 BSN = "123456789",
+                Address = "123 Main St",
                 Email = "john.doe@test.com",
                 DateOfBirth = new System.DateTime(1990, 1, 1),
                 PhoneNumber = "0612345678"
