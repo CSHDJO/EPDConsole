@@ -1,40 +1,36 @@
 using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Chipsoft.Assignments.EPDConsole.Core.Entities;
 using Chipsoft.Assignments.EPDConsole.Core.Interfaces;
 
-namespace Chipsoft.Assignments.EPDConsole.Application.Appointments.Commands
+namespace Chipsoft.Assignments.EPDConsole.Application.Appointments.Commands;
+
+public class AddAppointmentCommand : IRequest<int>
 {
-    public class AddAppointmentCommand : IRequest<int>
+    public int PatientId { get; set; }
+    public int PhysicianId { get; set; }
+    public DateTime AppointmentDateTime { get; set; }
+}
+
+public class AddAppointmentCommandHandler : IRequestHandler<AddAppointmentCommand, int>
+{
+    private readonly IApplicationDbContext _context;
+
+    public AddAppointmentCommandHandler(IApplicationDbContext context)
     {
-        public int PatientId { get; set; }
-        public int PhysicianId { get; set; }
-        public DateTime AppointmentDateTime { get; set; }
+        _context = context;
     }
 
-    public class AddAppointmentCommandHandler : IRequestHandler<AddAppointmentCommand, int>
+    public async Task<int> Handle(AddAppointmentCommand request, CancellationToken cancellationToken)
     {
-        private readonly IApplicationDbContext _context;
-
-        public AddAppointmentCommandHandler(IApplicationDbContext context)
+        var appointment = new Appointment
         {
-            _context = context;
-        }
+            PatientId = request.PatientId,
+            PhysicianId = request.PhysicianId,
+            AppointmentDateTime = request.AppointmentDateTime
+        };
 
-        public async Task<int> Handle(AddAppointmentCommand request, CancellationToken cancellationToken)
-        {
-            var appointment = new Appointment
-            {
-                PatientId = request.PatientId,
-                PhysicianId = request.PhysicianId,
-                AppointmentDateTime = request.AppointmentDateTime
-            };
-
-            _context.Appointments.Add(appointment);
-            await _context.SaveChangesAsync(cancellationToken);
-            return appointment.Id;
-        }
+        _context.Appointments.Add(appointment);
+        await _context.SaveChangesAsync(cancellationToken);
+        return appointment.Id;
     }
-} 
+}

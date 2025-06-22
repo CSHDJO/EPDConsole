@@ -1,45 +1,30 @@
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 using Chipsoft.Assignments.EPDConsole.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
-namespace Chipsoft.Assignments.EPDConsole.Application.Patients.Commands
+namespace Chipsoft.Assignments.EPDConsole.Application.Patients.Commands;
+
+public class DeletePatientCommand : IRequest
 {
-    public class DeletePatientCommand : IRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
+}
 
-    public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand>
-    {
-        private readonly IApplicationDbContext _context;
+public class DeletePatientCommandHandler(IApplicationDbContext context) : IRequestHandler<DeletePatientCommand>
+{
+    private readonly IApplicationDbContext _context = context;
 
-        public DeletePatientCommandHandler(IApplicationDbContext context)
+    public async Task Handle(DeletePatientCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _context.Patients
+            .FindAsync([request.Id], cancellationToken) ?? throw new Exception($"Patient with id {request.Id} not found");
+        var hasAppointments = await _context.Appointments.AnyAsync(a => a.PatientId == request.Id, cancellationToken);
+        if(hasAppointments)
         {
-            _context = context;
+            throw new Exception("Cannot delete patient with active appointments.");
         }
 
-        public async Task Handle(DeletePatientCommand request, CancellationToken cancellationToken)
-        {
-            var entity = await _context.Patients
-                .FindAsync(new object[] { request.Id }, cancellationToken);
+        _context.Patients.Remove(entity);
 
-            if (entity == null)
-            {
-                throw new Exception($"Patient with id {request.Id} not found");
-            }
-            
-            var hasAppointments = await _context.Appointments.AnyAsync(a => a.PatientId == request.Id, cancellationToken);
-            if(hasAppointments)
-            {
-                throw new Exception("Cannot delete patient with active appointments.");
-            }
-
-            _context.Patients.Remove(entity);
-
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+        await _context.SaveChangesAsync(cancellationToken);
     }
-} 
+}
