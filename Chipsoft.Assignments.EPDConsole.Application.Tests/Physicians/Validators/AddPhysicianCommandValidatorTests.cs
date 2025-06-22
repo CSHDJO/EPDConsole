@@ -26,9 +26,33 @@ namespace Chipsoft.Assignments.EPDConsole.Application.Tests.Physicians.Validator
         [Fact]
         public async Task Should_Have_Error_When_FirstName_Is_Empty()
         {
-            var command = new AddPhysicianCommand { FirstName = string.Empty };
+            var command = new AddPhysicianCommand { FirstName = string.Empty, LastName = "Test" };
             var result = await _validator.TestValidateAsync(command);
             result.ShouldHaveValidationErrorFor(x => x.FirstName);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_LastName_Is_Empty()
+        {
+            var command = new AddPhysicianCommand { FirstName = "Test", LastName = string.Empty };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.LastName);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_FirstName_Exceeds_MaxLength()
+        {
+            var command = new AddPhysicianCommand { FirstName = new string('a', 201), LastName = "Test" };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.FirstName);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_LastName_Exceeds_MaxLength()
+        {
+            var command = new AddPhysicianCommand { FirstName = "Test", LastName = new string('a', 201) };
+            var result = await _validator.TestValidateAsync(command);
+            result.ShouldHaveValidationErrorFor(x => x.LastName);
         }
 
         [Fact]
