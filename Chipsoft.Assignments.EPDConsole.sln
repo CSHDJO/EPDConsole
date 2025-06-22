@@ -5,6 +5,14 @@ VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chipsoft.Assignments.EPDConsole", "Chipsoft.Assignments.EPDConsole\Chipsoft.Assignments.EPDConsole.csproj", "{C3E36DFE-5F45-40C4-BCF8-CEACF7987B54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chipsoft.Assignments.EPDConsole.Core", "Chipsoft.Assignments.EPDConsole.Core\Chipsoft.Assignments.EPDConsole.Core.csproj", "{13E9F04A-65F5-4805-A725-D449E249FDF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chipsoft.Assignments.EPDConsole.Application", "Chipsoft.Assignments.EPDConsole.Application\Chipsoft.Assignments.EPDConsole.Application.csproj", "{2DE32729-1EF3-402A-816E-041CC4D4CB3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chipsoft.Assignments.EPDConsole.Infrastructure", "Chipsoft.Assignments.EPDConsole.Infrastructure\Chipsoft.Assignments.EPDConsole.Infrastructure.csproj", "{CF90E1EF-00EA-48BD-8ED7-531A91BDD45F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chipsoft.Assignments.EPDConsole.Application.Tests", "Chipsoft.Assignments.EPDConsole.Application.Tests\Chipsoft.Assignments.EPDConsole.Application.Tests.csproj", "{04FF203F-12B0-40F2-BF3C-B83EA01F140B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +23,22 @@ Global
 		{C3E36DFE-5F45-40C4-BCF8-CEACF7987B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3E36DFE-5F45-40C4-BCF8-CEACF7987B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3E36DFE-5F45-40C4-BCF8-CEACF7987B54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13E9F04A-65F5-4805-A725-D449E249FDF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13E9F04A-65F5-4805-A725-D449E249FDF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13E9F04A-65F5-4805-A725-D449E249FDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13E9F04A-65F5-4805-A725-D449E249FDF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE32729-1EF3-402A-816E-041CC4D4CB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE32729-1EF3-402A-816E-041CC4D4CB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE32729-1EF3-402A-816E-041CC4D4CB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE32729-1EF3-402A-816E-041CC4D4CB3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF90E1EF-00EA-48BD-8ED7-531A91BDD45F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF90E1EF-00EA-48BD-8ED7-531A91BDD45F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF90E1EF-00EA-48BD-8ED7-531A91BDD45F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF90E1EF-00EA-48BD-8ED7-531A91BDD45F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04FF203F-12B0-40F2-BF3C-B83EA01F140B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04FF203F-12B0-40F2-BF3C-B83EA01F140B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04FF203F-12B0-40F2-BF3C-B83EA01F140B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04FF203F-12B0-40F2-BF3C-B83EA01F140B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
