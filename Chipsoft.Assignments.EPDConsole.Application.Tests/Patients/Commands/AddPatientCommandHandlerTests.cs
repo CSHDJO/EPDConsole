@@ -3,11 +3,6 @@ using Chipsoft.Assignments.EPDConsole.Core.Entities;
 using Chipsoft.Assignments.EPDConsole.Core.Interfaces;
 using Moq;
 using Moq.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Chipsoft.Assignments.EPDConsole.Application.Tests.Patients.Commands
 {
     public class AddPatientCommandHandlerTests

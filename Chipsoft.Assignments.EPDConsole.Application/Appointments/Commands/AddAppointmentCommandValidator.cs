@@ -18,8 +18,26 @@ namespace Chipsoft.Assignments.EPDConsole.Application.Appointments.Commands
             RuleFor(v => v.AppointmentDateTime)
                 .GreaterThan(DateTime.Now).WithMessage("Een afspraak moet in de toekomst worden gepland.");
 
+            RuleFor(v => v.PatientId)
+                .NotEmpty().WithMessage("Patiënt ID is verplicht.")
+                .MustAsync(PatientExists).WithMessage("De geselecteerde patiënt bestaat niet.");
+
+            RuleFor(v => v.PhysicianId)
+                .NotEmpty().WithMessage("Arts ID is verplicht.")
+                .MustAsync(PhysicianExists).WithMessage("De geselecteerde arts bestaat niet.");
+
             RuleFor(v => v)
                 .MustAsync(BeAvailable).WithMessage("De arts of patiënt heeft op dit tijdstip al een andere afspraak.");
+        }
+
+        private async Task<bool> PatientExists(int id, CancellationToken cancellationToken)
+        {
+            return await _context.Patients.AnyAsync(p => p.Id == id, cancellationToken);
+        }
+        
+        private async Task<bool> PhysicianExists(int id, CancellationToken cancellationToken)
+        {
+            return await _context.Physicians.AnyAsync(p => p.Id == id, cancellationToken);
         }
 
         private async Task<bool> BeAvailable(AddAppointmentCommand command, CancellationToken cancellationToken)

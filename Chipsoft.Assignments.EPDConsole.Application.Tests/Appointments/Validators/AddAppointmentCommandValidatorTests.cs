@@ -86,5 +86,58 @@ namespace Chipsoft.Assignments.EPDConsole.Application.Tests.Appointments.Validat
             // Assert
             result.Errors.Should().Contain(e => e.ErrorMessage == "De arts of patiënt heeft op dit tijdstip al een andere afspraak.");
         }
+
+        [Fact]
+        public async Task Should_Have_Error_When_Date_Is_In_The_Past()
+        {
+            // Arrange
+            _contextMock.Setup(x => x.Patients).ReturnsDbSet(new List<Patient> { new Patient { Id = 1 } });
+            _contextMock.Setup(x => x.Physicians).ReturnsDbSet(new List<Physician> { new Physician { Id = 1 } });
+            _contextMock.Setup(x => x.Appointments).ReturnsDbSet(new List<Appointment>());
+            var validator = new AddAppointmentCommandValidator(_contextMock.Object);
+            var command = new AddAppointmentCommand { PatientId = 1, PhysicianId = 1, AppointmentDateTime = DateTime.Now.AddDays(-1) };
+            
+            // Act
+            var result = await validator.TestValidateAsync(command);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(cmd => cmd.AppointmentDateTime);
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_PatientId_Does_Not_Exist()
+        {
+            // Arrange
+            _contextMock.Setup(x => x.Patients).ReturnsDbSet(new List<Patient>());
+            _contextMock.Setup(x => x.Physicians).ReturnsDbSet(new List<Physician> { new Physician { Id = 1 } });
+            _contextMock.Setup(x => x.Appointments).ReturnsDbSet(new List<Appointment>());
+            var validator = new AddAppointmentCommandValidator(_contextMock.Object);
+            var command = new AddAppointmentCommand { PatientId = 99, PhysicianId = 1, AppointmentDateTime = DateTime.Now.AddDays(1) };
+            
+            // Act
+            var result = await validator.TestValidateAsync(command);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(cmd => cmd.PatientId)
+                .WithErrorMessage("De geselecteerde patiënt bestaat niet.");
+        }
+
+        [Fact]
+        public async Task Should_Have_Error_When_PhysicianId_Does_Not_Exist()
+        {
+            // Arrange
+            _contextMock.Setup(x => x.Patients).ReturnsDbSet(new List<Patient> { new Patient { Id = 1 } });
+            _contextMock.Setup(x => x.Physicians).ReturnsDbSet(new List<Physician>());
+            _contextMock.Setup(x => x.Appointments).ReturnsDbSet(new List<Appointment>());
+            var validator = new AddAppointmentCommandValidator(_contextMock.Object);
+            var command = new AddAppointmentCommand { PatientId = 1, PhysicianId = 99, AppointmentDateTime = DateTime.Now.AddDays(1) };
+            
+            // Act
+            var result = await validator.TestValidateAsync(command);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(cmd => cmd.PhysicianId)
+                .WithErrorMessage("De geselecteerde arts bestaat niet.");
+        }
     }
 } 
